@@ -36,7 +36,7 @@ You'll have received your IAM username and password from the facilitator. To sig
 You'll have received a login and password for Sysdig from the facilitator. To sign into your environment:
 
 1. Open a web browser and go to https://sysdig.com
-1. Under the Log In dropdown on the top right of the page choose **AWS-AP-Sydney** under **Sysdig Secure** (NOTE: not Sysdig Monitor which we won't be looking at today)
+1. Under the Log In dropdown on the top right of the page choose **EU-Central** under **Sysdig Secure** (NOTE: not Sysdig Monitor which we won't be looking at today)
     1. ![](instruction-images/sysdiglogin.png)
 1. Enter the email address and password you were provided for Sysdig and click the **Log in** button
 1. If you see the Customize your Sysdig experience screen, then click the **Get into Sysdig** button in the lower right hand corner to take you through to the **Home** screen
@@ -287,7 +287,7 @@ You'll also note if you look at the trust relationships you'll see that this rol
 ### The Exploit
 If we install the AWS CLI into our container at runtime and run some commands we'll see if our Pod has been assigned an IRSA role and they succeed. There is an **example-curls-bucket-public.sh** file in /root - have a look at that with a **cat example-curls-bucket-public.sh** then run it with **./example-curls-bucket-public.sh**
 
-THe install of the AWS CLI succeeds but the S3 changes fail as we don't have that access. We have an updated manifest for the security-playground Deployment that will use this **irsa** ServiceAccount instead of the **default** one we have been using. Apply that by running **kubectl apply -f security-playground-irsa.yaml** to apply that change. Now re-run **./example-curls-bucket-public.sh** and this time they will work!
+The install of the AWS CLI succeeds but the S3 changes fail as we don't have that access. We have an updated manifest for the security-playground Deployment that will use this **irsa** ServiceAccount instead of the **default** one we have been using. Apply that by running **kubectl apply -f security-playground-irsa.yaml** to apply that change. Now re-run **./example-curls-bucket-public.sh** and this time they will work!
 
 If you look at this bucket in the S3 console you'll see that it (and all of its contents) is now public (and can be downloaded/exfiltrated by the attacker right from the S3 public APIs)!
 ![](instruction-images/bucketpublic.png)
@@ -345,7 +345,7 @@ Here are the instructions for how to install and run our vulnerability CLI scann
 
 We have already installed it on your jumpbox for you. You can run a scan of the image **logstash:7.16.1** which is an image that has Log4J in it by running the following command:
 
-**./sysdig-cli-scanner -a app.au1.sysdig.com logstash:7.16.1**
+**./sysdig-cli-scanner -a https://eu1.app.sysdig.com/ logstash:7.16.1**
 
 Not only do you get that output into your build logs for the pipeline stage, but you can also explore the results the Sysdig SaaS UI by following that link listed in the output or going to **Vulnerabilities** -> **Pipeline** in the UI. Note that this is missing the runtime context (as, since it was scanned in a pipeline, and we don't yet know that runtime context).
 
